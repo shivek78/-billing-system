@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vijay Woollen Work - Billing Software</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e8ed;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 5px 0;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95em;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: scale(1.02);
+        }
+
+        .checkbox-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.3);
+            accent-color: #3498db;
+        }
+
+        .gst-block {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 10px 20px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin: 30px 0;
+        }
+
+        .totals-table {
+            min-width: 350px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .totals-table table {
+            box-shadow: none;
+            margin: 0;
+        }
+
+        .totals-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
+        }
+
+        .totals-table .total-row {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .preview-area {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .company-info h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .invoice-title {
+            text-align: right;
+            color: #3498db;
+        }
+
+        .invoice-title h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .address-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .address-block {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .address-block h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .item-row {
+            transition: all 0.3s ease;
+        }
+
+        .item-row:hover {
+            background: linear-gradient(90deg, #f8f9fa, #fff, #f8f9fa);
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .address-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Vijay Woollen Work</h1>
+            <p><address>#B-5-1209, Purana Bazaar, Ludhiana, Punjab – 141008</address>
+                <contact> 8427257106 , 9872989024</contact>
+                <br>
+                <mail>vijaywoolenwork@gmail.com></mail>
+            </p>
+
+        </div>
+
+        <div class="main-content">
+            <div class="form-grid">
+                <div class="card">
+                    <strong>🏢 Company Information</strong>
+                    <label>Company Name</label>
+                    <input id="company_name" type="text" value="Vijay Woollen Work" />
+
+                    <label>Address</label>
+                    <textarea id="company_addr" rows="3">#B-5-1209, Purana Bazaar, Ludhiana, Punjab – 141008</textarea>
+
+                    <label>Phone / WhatsApp</label>
+                    <input id="company_phone" type="text" value="+91-8427257106, +91-9872989024" />
+
+                    <label>Email</label>
+                    <input id="company_email" type="text" value="vijaywoolenwork@gmail.com" />
+
+                    <div class="checkbox-container">
+                        <input id="use_gst" type="checkbox" />
+                        <label style="margin: 0;">Enable GST Calculation</label>
+                    </div>
+
+                    <div id="gst_block" class="gst-block" style="display: none;">
+                        <label>GSTIN</label>
+                        <input id="company_gstin" type="text" placeholder="Enter GSTIN" />
+
+                        <label>GST Rate (%)</label>
+                        <input id="gst_rate" type="number" value="5" min="0" step="0.1" />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <strong>📋 Bill Details</strong>
+                    <label>Bill Number</label>
+                    <input id="bill_no" type="text" value="INV-001" />
+
+                    <label>Date</label>
+                    <input id="bill_date" type="date" />
+
+                    <label>Customer Name</label>
+                    <input id="cust_name" type="text" placeholder="Customer / Party name" />
+
+                    <label>Customer Address</label>
+                    <textarea id="cust_addr" rows="3" placeholder="Customer address"></textarea>
+
+                    <label>Customer Phone</label>
+                    <input id="cust_phone" type="text" placeholder="Customer phone number" />
+                </div>
+            </div>
+
+            <div class="card">
+                <strong>🛍️ Items / Services</strong>
+                <table id="items_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">Description</th>
+                            <th style="width: 15%">Quantity</th>
+                            <th style="width: 20%">Rate (₹)</th>
+                            <th style="width: 20%">Amount (₹)</th>
+                            <th style="width: 5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items_body">
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn" id="add_row">➕ Add Product / Service</button>
+                    <button class="btn secondary" id="clear_rows">🗑️ Clear All Items</button>
+                </div>
+            </div>
+
+            <div class="totals-section">
+                <div class="totals-table">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><strong>Subtotal:</strong></td>
+                                <td id="subtotal" style="text-align: right;">₹ 0.00</td>
+                            </tr>
+                            <tr id="tax_row" style="display: none;">
+                                <td><strong>GST (<span id="gst_rate_label">0</span>%):</strong></td>
+                                <td id="tax_amt" style="text-align: right;">₹ 0.00</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Total Amount:</strong></td>
+                                <td id="total_amt" style="text-align: right;"><strong>₹ 0.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn" id="preview_btn">👁️ Preview Invoice</button>
+                <button class="btn success" id="print_btn">🖨️ Print / Save PDF</button>
+                <button class="btn secondary" id="whatsapp_btn">📱 Share on WhatsApp</button>
+                <button class="btn secondary" id="save_data_btn">💾 Save Invoice Data</button>
+                <button class="btn secondary" id="load_data_btn">📂 Load Saved Data</button>
+                <button class="btn secondary" id="new_invoice_btn">📄 New Invoice</button>
+            </div>
+
+            <div id="preview_area" class="preview-area">
+                </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification">
+        Action completed successfully!
+    </div>
+
+    <script>
+        // Initialize the application
+        let invoiceData = [];
+        let itemCounter = 0;
+
+        // Set current date
+        document.getElementById('bill_date').value = new Date().toISOString().split('T')[0];
+
+        // Generate unique invoice number
+        function generateInvoiceNumber() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `INV-${year}${month}${day}-${random}`;
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // GST toggle functionality
+        document.getElementById('use_gst').addEventListener('change', function() {
+            const gstBlock = document.getElementById('gst_block');
+            const taxRow = document.getElementById('tax_row');
+
+            if (this.checked) {
+                gstBlock.style.display = 'block';
+                taxRow.style.display = 'table-row';
+            } else {
+                gstBlock.style.display = 'none';
+                taxRow.style.display = 'none';
+            }
+            calculateTotals();
+        });
+
+        // Add new item row
+        function addItemRow() {
+            itemCounter++;
+            const tbody = document.getElementById('items_body');
+            const row = document.createElement('tr');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <td><input type="text" placeholder="Product/Service description" class="item-desc" style="width: 100%; border: none; padding: 8px; background: transparent;" /></td>
+                <td><input type="number" min="1" value="1" class="item-qty" style="width: 100%; border: none; padding: 8px; background: transparent; text-align: center;" /></td>
+                <td><input type="number" min="0" step="0.01" placeholder="0.00" class="item-rate" style="width: 100%; border: none; padding: 8px; background: transparent; text-align: right;" /></td>
+                <td class="item-amount" style="text-align: right; font-weight: bold;">₹ 0.00</td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">×</button></td>
+            `;
+            tbody.appendChild(row);
+
+            // Add event listeners for calculation
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateTotals);
+            });
+
+            calculateTotals();
+            row.querySelector('.item-desc').focus();
+        }
+
+        // Delete item row
+        function deleteRow(button) {
+            button.closest('tr').remove();
+            calculateTotals();
+            showNotification('Item removed successfully!');
+        }
+
+        // Clear all items
+        function clearAllItems() {
+            if (confirm('Are you sure you want to clear all items?')) {
+                document.getElementById('items_body').innerHTML = '';
+                calculateTotals();
+                showNotification('All items cleared!');
+            }
+        }
+
+        // Calculate totals
+        function calculateTotals() {
+            const rows = document.querySelectorAll('#items_body tr');
+            let subtotal = 0;
+
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+                const amount = qty * rate;
+
+                row.querySelector('.item-amount').textContent = `₹ ${amount.toFixed(2)}`;
+                subtotal += amount;
+            });
+
+            document.getElementById('subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
+
+            // Calculate GST if enabled
+            let total = subtotal;
+            if (document.getElementById('use_gst').checked) {
+                const gstRate = parseFloat(document.getElementById('gst_rate').value) || 0;
+                const gstAmount = (subtotal * gstRate) / 100;
+
+                document.getElementById('gst_rate_label').textContent = gstRate;
+                document.getElementById('tax_amt').textContent = `₹ ${gstAmount.toFixed(2)}`;
+                total = subtotal + gstAmount;
+            }
+
+            document.getElementById('total_amt').textContent = `₹ ${total.toFixed(2)}`;
+        }
+
+        // Generate invoice preview
+        function generatePreview() {
+            const previewArea = document.getElementById('preview_area');
+            const companyName = document.getElementById('company_name').value;
+            const companyAddr = document.getElementById('company_addr').value;
+            const companyPhone = document.getElementById('company_phone').value;
+            const companyEmail = document.getElementById('company_email').value;
+            const billNo = document.getElementById('bill_no').value;
+            const billDate = document.getElementById('bill_date').value;
+            const custName = document.getElementById('cust_name').value;
+            const custAddr = document.getElementById('cust_addr').value;
+            const custPhone = document.getElementById('cust_phone').value;
+
+            let itemsHtml = '';
+            const rows = document.querySelectorAll('#items_body tr');
+
+            rows.forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                const qty = row.querySelector('.item-qty').value;
+                const rate = parseFloat(row.querySelector('.item-rate').value || 0);
+                const amount = row.querySelector('.item-amount').textContent;
+
+                if (desc && qty && rate > 0) {
+                    itemsHtml += `
+                        <tr>
+                            <td>${desc}</td>
+                            <td style="text-align: center;">${qty}</td>
+                            <td style="text-align: right;">₹ ${rate.toFixed(2)}</td>
+                            <td style="text-align: right;">${amount}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            let gstSection = '';
+            if (document.getElementById('use_gst').checked) {
+                const gstin = document.getElementById('company_gstin').value;
+                const gstRate = document.getElementById('gst_rate_label').textContent;
+                const gstAmount = document.getElementById('tax_amt').textContent;
+
+                gstSection = `
+                    <p><strong>GSTIN:</strong> ${gstin}</p>
+                    <tr>
+                        <td colspan="3" style="text-align: right;"><strong>GST (${gstRate}%):</strong></td>
+                        <td style="text-align: right;">${gstAmount}</td>
+                    </tr>
+                `;
+            }
+
+            const subtotal = document.getElementById('subtotal').textContent;
+            const total = document.getElementById('total_amt').textContent;
+
+            previewArea.innerHTML = `
+                <div class="invoice-header">
+                    <div class="company-info">
+                        <h2>${companyName}</h2>
+                        <p>${companyAddr.replace(/\n/g, '<br>')}</p>
+                        <p><strong>Phone:</strong> ${companyPhone}</p>
+                        <p><strong>Email:</strong> ${companyEmail}</p>
+                        ${gstSection}
+                    </div>
+                    <div class="invoice-title">
+                        <h1>INVOICE</h1>
+                        <p><strong>Invoice #:</strong> ${billNo}</p>
+                        <p><strong>Date:</strong> ${new Date(billDate).toLocaleDateString('en-IN')}</p>
+                    </div>
+                </div>
+
+                <div class="address-section">
+                    <div class="address-block">
+                        <h3>📤 From</h3>
+                        <p><strong>${companyName}</strong></p>
+                        <p>${companyAddr.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <div class="address-block">
+                        <h3>📥 To</h3>
+                        <p><strong>${custName}</strong></p>
+                        <p>${custAddr.replace(/\n/g, '<br>')}</p>
+                        ${custPhone ? `<p><strong>Phone:</strong> ${custPhone}</p>` : ''}
+                    </div>
+                </div>
+
+                <table style="margin: 30px 0;">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th style="text-align: center;">Qty</th>
+                            <th style="text-align: right;">Rate</th>
+                            <th style="text-align: right;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsHtml}
+                        <tr style="border-top: 2px solid #3498db;">
+                            <td colspan="3" style="text-align: right;"><strong>Subtotal:</strong></td>
+                            <td style="text-align: right;"><strong>${subtotal}</strong></td>
+                        </tr>
+                        ${document.getElementById('use_gst').checked ? `
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>GST (${document.getElementById('gst_rate_label').textContent}%):</strong></td>
+                            <td style="text-align: right;"><strong>${document.getElementById('tax_amt').textContent}</strong></td>
+                        </tr>
+                        ` : ''}
+                        <tr style="background: linear-gradient(135deg, #2c3e50, #34495e); color: white; font-size: 1.1em;">
+                            <td colspan="3" style="text-align: right;"><strong>TOTAL:</strong></td>
+                            <td style="text-align: right;"><strong>${total}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 40px; text-align: center; color: #7f8c8d; font-size: 0.9em;">
+                    <p>Thank you for your business!</p>
+                    <p>Generated on ${new Date().toLocaleDateString('en-IN')} at ${new Date().toLocaleTimeString('en-IN')}</p>
+                </div>
+            `;
+
+            previewArea.style.display = 'block';
+            previewArea.scrollIntoView({ behavior: 'smooth' });
+            showNotification('Invoice preview generated successfully!');
+        }
+
+        // Print invoice
+        function printInvoice() {
+            generatePreview();
+            setTimeout(() => {
+                const printContent = document.getElementById('preview_area').innerHTML;
+                const originalContent = document.body.innerHTML;
+
+                document.body.innerHTML = `
+                    <div style="padding: 20px; font-family: Arial, sans-serif;">
+                        ${printContent}
+                    </div>
+                `;
+
+                window.print();
+                document.body.innerHTML = originalContent;
+                location.reload();
+            }, 500);
+        }
+
+        // Save invoice data locally
+        function saveInvoiceData() {
+            const invoiceData = {
+                company: {
+                    name: document.getElementById('company_name').value,
+                    address: document.getElementById('company_addr').value,
+                    phone: document.getElementById('company_phone').value,
+                    email: document.getElementById('company_email').value,
+                    gstin: document.getElementById('company_gstin').value,
+                    gstRate: document.getElementById('gst_rate').value,
+                    useGst: document.getElementById('use_gst').checked
+                },
+                invoice: {
+                    billNo: document.getElementById('bill_no').value,
+                    date: document.getElementById('bill_date').value,
+                    customerName: document.getElementById('cust_name').value,
+                    customerAddress: document.getElementById('cust_addr').value,
+                    customerPhone: document.getElementById('cust_phone').value
+                },
+                items: [],
+                totals: {
+                    subtotal: document.getElementById('subtotal').textContent,
+                    tax: document.getElementById('tax_amt').textContent,
+                    total: document.getElementById('total_amt').textContent
+                }
+            };
+            const rows = document.querySelectorAll('#items_body tr');
+            rows.forEach(row => {
+                invoiceData.items.push({
+                    desc: row.querySelector('.item-desc').value,
+                    qty: row.querySelector('.item-qty').value,
+                    rate: row.querySelector('.item-rate').value,
+                    amount: row.querySelector('.item-amount').textContent
+                });
+            });
+
+            const jsonData = JSON.stringify(invoiceData);
+            localStorage.setItem('vijayWoollenInvoice', jsonData);
+            showNotification('Invoice data saved successfully to local storage!');
+        }
+
+        // Load invoice data from local storage
+        function loadInvoiceData() {
+            const jsonData = localStorage.getItem('vijayWoollenInvoice');
+            if (!jsonData) {
+                showNotification('No saved invoice data found!', 'danger');
+                return;
+            }
+
+            const loadedData = JSON.parse(jsonData);
+
+            // Load company and invoice details
+            document.getElementById('company_name').value = loadedData.company.name;
+            document.getElementById('company_addr').value = loadedData.company.address;
+            document.getElementById('company_phone').value = loadedData.company.phone;
+            document.getElementById('company_email').value = loadedData.company.email;
+            document.getElementById('company_gstin').value = loadedData.company.gstin;
+            document.getElementById('gst_rate').value = loadedData.company.gstRate;
+            document.getElementById('use_gst').checked = loadedData.company.useGst;
+
+            document.getElementById('bill_no').value = loadedData.invoice.billNo;
+            document.getElementById('bill_date').value = loadedData.invoice.date;
+            document.getElementById('cust_name').value = loadedData.invoice.customerName;
+            document.getElementById('cust_addr').value = loadedData.invoice.customerAddress;
+            document.getElementById('cust_phone').value = loadedData.invoice.customerPhone;
+
+            // Toggle GST block visibility based on loaded data
+            document.getElementById('gst_block').style.display = loadedData.company.useGst ? 'block' : 'none';
+
+            // Clear current items and load saved items
+            document.getElementById('items_body').innerHTML = '';
+            loadedData.items.forEach(item => {
+                const tbody = document.getElementById('items_body');
+                const row = document.createElement('tr');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <td><input type="text" value="${item.desc}" class="item-desc" style="width: 100%; border: none; padding: 8px; background: transparent;" /></td>
+                    <td><input type="number" min="1" value="${item.qty}" class="item-qty" style="width: 100%; border: none; padding: 8px; background: transparent; text-align: center;" /></td>
+                    <td><input type="number" min="0" step="0.01" value="${item.rate}" class="item-rate" style="width: 100%; border: none; padding: 8px; background: transparent; text-align: right;" /></td>
+                    <td class="item-amount" style="text-align: right; font-weight: bold;">${item.amount}</td>
+                    <td><button class="delete-btn" onclick="deleteRow(this)">×</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Re-attach event listeners for newly created rows
+            document.querySelectorAll('#items_body input').forEach(input => {
+                input.addEventListener('input', calculateTotals);
+            });
+
+            calculateTotals();
+            showNotification('Invoice data loaded successfully!');
+        }
+
+        // Start a new invoice
+        function newInvoice() {
+            if (confirm('Are you sure you want to start a new invoice? All unsaved data will be lost.')) {
+                // Reset all form fields
+                document.getElementById('bill_no').value = generateInvoiceNumber();
+                document.getElementById('bill_date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('cust_name').value = '';
+                document.getElementById('cust_addr').value = '';
+                document.getElementById('cust_phone').value = '';
+                document.getElementById('items_body').innerHTML = '';
+                document.getElementById('preview_area').style.display = 'none';
+
+                calculateTotals();
+                showNotification('New invoice created!');
+            }
+        }
+
+        // Share on WhatsApp
+        function shareOnWhatsApp() {
+            const custName = document.getElementById('cust_name').value || 'Customer';
+            const billNo = document.getElementById('bill_no').value;
+            const total = document.getElementById('total_amt').textContent;
+            const companyName = document.getElementById('company_name').value;
+            const companyPhone = document.getElementById('company_phone').value;
+
+            let message = `Hello ${custName},\n\n`;
+            message += `Your invoice #${billNo} from ${companyName} has been generated.\n\n`;
+            message += `*Invoice Details:*\n`;
+
+            // Add items to the message
+            const rows = document.querySelectorAll('#items_body tr');
+            let itemsMsg = '';
+            rows.forEach(row => {
+                const desc = row.querySelector('.item-desc').value;
+                const qty = row.querySelector('.item-qty').value;
+                const rate = parseFloat(row.querySelector('.item-rate').value || 0);
+                const amount = row.querySelector('.item-amount').textContent;
+
+                if (desc && qty && rate > 0) {
+                    itemsMsg += ` • ${desc} (Qty: ${qty}, Rate: ₹${rate.toFixed(2)}) - ${amount}\n`;
+                }
+            });
+
+            if(itemsMsg) {
+                message += itemsMsg + '\n';
+            }
+
+            // Add totals to the message
+            const subtotal = document.getElementById('subtotal').textContent;
+            message += `*Subtotal:* ${subtotal}\n`;
+            if (document.getElementById('use_gst').checked) {
+                const gstRate = document.getElementById('gst_rate_label').textContent;
+                const gstAmount = document.getElementById('tax_amt').textContent;
+                message += `*GST (${gstRate}%):* ${gstAmount}\n`;
+            }
+            message += `*Total Amount:* ${total}\n\n`;
+            message += `Thank you for your business!\n\n`;
+            message += `For any queries, please contact us at ${companyPhone}.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Event Listeners for buttons
+        document.getElementById('add_row').addEventListener('click', addItemRow);
+        document.getElementById('clear_rows').addEventListener('click', clearAllItems);
+        document.getElementById('preview_btn').addEventListener('click', generatePreview);
+        document.getElementById('print_btn').addEventListener('click', printInvoice);
+        document.getElementById('save_data_btn').addEventListener('click', saveInvoiceData);
+        document.getElementById('load_data_btn').addEventListener('click', loadInvoiceData);
+        document.getElementById('new_invoice_btn').addEventListener('click', newInvoice);
+        document.getElementById('whatsapp_btn').addEventListener('click', shareOnWhatsApp);
+
+        // Initial setup
+        addItemRow();
+        document.getElementById('bill_no').value = generateInvoiceNumber();
+
+        // Add event listeners for total calculation
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            if (element.id !== 'company_gstin' && element.id !== 'company_name' && element.id !== 'company_addr' && element.id !== 'company_phone' && element.id !== 'company_email' && element.id !== 'bill_no' && element.id !== 'bill_date' && element.id !== 'cust_name' && element.id !== 'cust_addr' && element.id !== 'cust_phone') {
+                element.addEventListener('input', calculateTotals);
+            }
+        });
+    </script>
+</body>
+</html>
